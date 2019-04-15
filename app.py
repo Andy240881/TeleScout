@@ -218,7 +218,7 @@ def handle_postback(event):
             os.mknod("prods_web2.txt")
         sftp.get('prods_web.txt', 'prods_web2.txt')
         z=0
-        with open('prods_web2.txt', 'r', encoding='UTF-8') as file:
+        with open('prods_web2.txt', 'r') as file:
             for line in file:
                 prods_webs.append(line.rstrip('\n'))
         for web in prods_webs:
@@ -227,6 +227,7 @@ def handle_postback(event):
         line_bot_api.push_message(user_id, message)
         ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+str(prods_webs[int(event.postback.data)]),get_pty=True)
         print(prods_webs[int(event.postback.data)])
+        print(ssh_stderr.readline())
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
