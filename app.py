@@ -69,7 +69,6 @@ def handle_message(event):
     )
     )
     line_bot_api.push_message(user_id, message)
-    ssh.close()
 @handler.add(PostbackEvent)#,message=ButtonsTemplate)
 def handle_postback(event):
     #postback=event
@@ -228,6 +227,7 @@ def handle_postback(event):
         ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+str(prods_webs[int(event.postback.data)]),get_pty=True)
         print(prods_webs[int(event.postback.data)])
         print(ssh_stderr.readline())
+        ssh.close()
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
