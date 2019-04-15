@@ -212,7 +212,7 @@ def handle_postback(event):
             )
             line_bot_api.reply_message(event.reply_token, message)
     elif (event.postback.data)==str(i) or (event.postback.data)==str(i+1) or (event.postback.data)==str(i+2):
-	    sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
+        sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
         sftp = ssh.open_sftp()
         if os.path.isfile("prods_web2.txt"):
             os.remove('prods_web2.txt')
