@@ -212,17 +212,17 @@ def handle_postback(event):
             )
             line_bot_api.reply_message(event.reply_token, message)
     elif (event.postback.data)==str(i) or (event.postback.data)==str(i+1) or (event.postback.data)==str(i+2):
-            if os.path.isfile("prods_web2.txt"):
-                os.remove('prods_web2.txt')
-            else:
-                os.mknod("prods_web2.txt")
-            sftp.get('prods_web.txt', 'prods_web2.txt')
-            z=0
-            with open('prods_web2.txt', 'r', encoding='UTF-8') as file:
-                for line in file:
-                    prods_webs.append(line.rstrip('\n'))
-            for web in prods_webs:
-                print(web)  
+        if os.path.isfile("prods_web2.txt"):
+            os.remove('prods_web2.txt')
+        else:
+            os.mknod("prods_web2.txt")
+        sftp.get('prods_web.txt', 'prods_web2.txt')
+        z=0
+        with open('prods_web2.txt', 'r', encoding='UTF-8') as file:
+            for line in file:
+                prods_webs.append(line.rstrip('\n'))
+        for web in prods_webs:
+            print(web)  
         message = TextSendMessage(text="成功")
         line_bot_api.push_message(user_id, message)
         ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+prods_webs[int(event.postback.data)],get_pty=True)
