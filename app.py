@@ -224,9 +224,10 @@ def handle_postback(event):
             print(web)  
         message = TextSendMessage(text="成功")
         line_bot_api.push_message(user_id, message)
-        #ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+'https://24h.pchome.com.tw/prod/DAAG4A-A9007FTFU')
-        print(int(event.postback.data))
-        #print(ssh_stderr.readline())
+        url=str(prods_webs[int(event.postback.data)])
+        ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+url)
+        print(prods_webs[int(event.postback.data)])
+        print(ssh_stderr.readline())
         ssh.close()
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
