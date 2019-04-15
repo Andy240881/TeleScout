@@ -16,10 +16,6 @@ app = Flask(__name__)
 line_bot_api = LineBotApi('9z2SNrr86ZejumpU4hSMa5xry0tLD263V38C3twWNq9ZTr4eIkxTjPMNT3SHyeGzE/yk8JLxexC8M9kzcwAQQEQD6msApg7AaLAn0iV63HaiT7GbMld9wnu4A14261GorC87rWc0BNu603IrNCSzIAdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
 handler = WebhookHandler('704ac71eddb12e51957d76b6d6bbf514')
-i=0
-j=0
-prods_pic=[]
-prods_webs=[]
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -154,6 +150,8 @@ def handle_postback(event):
         line_bot_api.push_message(user_id, message) 
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
+            prods_pic=[]
+            prods_webs=[]
             sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
             sftp = ssh.open_sftp()
             fp = open("input.txt", "w")	 
@@ -228,7 +226,7 @@ def handle_postback(event):
         message = TextSendMessage(text="成功")
         line_bot_api.push_message(user_id, message)
         ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+prods_webs[int(event.postback.data)],get_pty=True)
-        
+        print(prods_webs[int(event.postback.data)])
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
