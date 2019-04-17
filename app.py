@@ -118,9 +118,6 @@ def handle_postback(event):
         def handle_message4(event):
             stdin.channel.send(str(event.message.text))
             stdin.channel.shutdown_write()
-            time.sleep(2)
-            message = TextSendMessage(text=str(stdout.readline()))
-            line_bot_api.push_message(user_id, message)
             #message = TextSendMessage(text="收到")
             #line_bot_api.reply_message(event.reply_token, message)  
     elif (event.postback.data)=="登入":      
