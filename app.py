@@ -181,7 +181,7 @@ def handle_postback(event):
             with open('prods_img2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     prods_pic.append(line.rstrip('\n'))
-            if os.path.isfile("prods_price.txt"):
+            if os.path.isfile("prods_price2.txt"):
                 os.remove('prods_price2.txt')
                 os.mknod("prods_price2.txt")
             else:
