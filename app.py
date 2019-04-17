@@ -243,7 +243,7 @@ def handle_postback(event):
         url=str(prods_webs[int(event.postback.data)])
         ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+url+" "+str(user_id))
         print(prods_webs[int(event.postback.data)])
-        print(ssh_stderr.readline())
+        print(ssh_stderr.readlines())
         ssh.close()
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
