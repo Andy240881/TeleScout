@@ -101,7 +101,7 @@ def handle_postback(event):
         stdin,stdout,stderr=ssh.exec_command('python3 login.py '+str(user_id))
         time.sleep(5)
         #os.system("0x1A")
-        print(stdout.readline())
+        #print(stdout.readline())
         if os.path.isfile("image2.txt"):
             os.remove('image2.txt')
         else:
