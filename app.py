@@ -104,6 +104,7 @@ def handle_postback(event):
         #print(stdout.readline())
         if os.path.isfile("image2.txt"):
             os.remove('image2.txt')
+            os.mknod("image2.txt")
         else:
             os.mknod("image2.txt")
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
@@ -173,6 +174,7 @@ def handle_postback(event):
         #fp.close()
             if os.path.isfile("prods_img2.txt"):
                 os.remove('prods_img2.txt')
+                os.mknod("prods_img2.txt")
             else:
                 os.mknod("prods_img2.txt")
             sftp.get('prods_img.txt', 'prods_img2.txt')
@@ -181,6 +183,7 @@ def handle_postback(event):
                     prods_pic.append(line.rstrip('\n'))
             if os.path.isfile("prods_price.txt"):
                 os.remove('prods_price2.txt')
+                os.mknod("prods_price2.txt")
             else:
                 os.mknod("prods_price2.txt")
             sftp.get('prods_price.txt', 'prods_price2.txt')
