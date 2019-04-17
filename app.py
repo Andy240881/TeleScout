@@ -191,7 +191,7 @@ def handle_postback(event):
             ImageCarouselColumn(
                 image_url=prods_pic[i],
                 action=PostbackTemplateAction(
-                    label=str(prods_prices[i]),
+                    label="$"+str(prods_prices[i]),
                     #text='',
                     data=str(i)
                 )
@@ -199,7 +199,7 @@ def handle_postback(event):
             ImageCarouselColumn(
                 image_url=prods_pic[i+1],
                 action=PostbackTemplateAction(
-                    label=str(prods_prices[i+1]),
+                    label="$"+str(prods_prices[i+1]),
                     #text='',
                     data=str(i+1)
                 )
@@ -207,7 +207,7 @@ def handle_postback(event):
             ImageCarouselColumn(
                 image_url=prods_pic[i+2],
                 action=PostbackTemplateAction(
-                    label=str(prods_prices[i+2]),
+                    label="$"+str(prods_prices[i+2]),
                     #text='',
                     data=str(i+2)
                 )
