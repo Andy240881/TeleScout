@@ -150,6 +150,7 @@ def handle_postback(event):
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
             prods_pic=[]
+            prods_prices=[]
             sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
             sftp = ssh.open_sftp()
             fp = open("input.txt", "w")	 
@@ -174,6 +175,14 @@ def handle_postback(event):
             with open('prods_img2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     prods_pic.append(line.rstrip('\n'))
+            if os.path.isfile("prods_price.txt"):
+                os.remove('prods_price2.txt')
+            else:
+                os.mknod("prods_price2.txt")
+            sftp.get('prods_price.txt', 'prods_price2.txt')
+            with open('prods_price2.txt', 'r', encoding='UTF-8') as file:
+                for line in file:
+                    prods_prices.append(line.rstrip('\n'))
             i=0
             message = TemplateSendMessage(
             alt_text='ImageCarousel template',
@@ -182,7 +191,7 @@ def handle_postback(event):
             ImageCarouselColumn(
                 image_url=prods_pic[i],
                 action=PostbackTemplateAction(
-                    label='Buy Now',
+                    label=str(prods_prices[i]),
                     #text='',
                     data=str(i)
                 )
@@ -190,7 +199,7 @@ def handle_postback(event):
             ImageCarouselColumn(
                 image_url=prods_pic[i+1],
                 action=PostbackTemplateAction(
-                    label='Buy Now',
+                    label=str(prods_prices[i+1]),
                     #text='',
                     data=str(i+1)
                 )
@@ -198,7 +207,7 @@ def handle_postback(event):
             ImageCarouselColumn(
                 image_url=prods_pic[i+2],
                 action=PostbackTemplateAction(
-                    label='Buy Now',
+                    label=str(prods_prices[i+2]),
                     #text='',
                     data=str(i+2)
                 )
