@@ -152,6 +152,9 @@ def handle_postback(event):
         def handle_message5(event):
             prods_pic=[]
             prods_prices=[]
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
             sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
             sftp = ssh.open_sftp()
             fp = open("input.txt", "w")	 
@@ -172,9 +175,6 @@ def handle_postback(event):
         #fp=open('auto_image2.txt', 'r')
         #url=fp.readline()
         #fp.close()
-            ssh = paramiko.SSHClient()
-            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
             stdin,stdout,stderr=ssh.exec_command('python3 save.py',get_pty=True)
             print(stderr.readlines())
             time.sleep(6)
