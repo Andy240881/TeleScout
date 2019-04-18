@@ -172,6 +172,7 @@ def handle_postback(event):
         #fp=open('auto_image2.txt', 'r')
         #url=fp.readline()
         #fp.close()
+            stdin,stdout,stderr=ssh.exec_command('python3 save.py')
             if os.path.isfile("prods_img2.txt"):
                 os.remove('prods_img2.txt')
                 os.mknod("prods_img2.txt")
