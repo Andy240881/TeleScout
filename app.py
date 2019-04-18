@@ -191,6 +191,7 @@ def handle_postback(event):
             sftp.get('prods_price.txt', 'prods_price2.txt')
             with open('prods_price2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
+                	print(line)
                     prods_prices.append(line.rstrip('\n'))
             i=0
             message = TemplateSendMessage(
