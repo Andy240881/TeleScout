@@ -163,7 +163,7 @@ def handle_postback(event):
             sftp.put('input.txt', 'input.txt')
             stdin,stdout,stderr=ssh.exec_command('python3 money/money.py')
             print(stderr.readline())
-            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py')
+            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict1.py')
             print(stderr.readline())
         #stdin,stdout,stderr=ssh.exec_command('python3 auto_login.py')
         #if os.path.isfile("auto_image2.txt"):
