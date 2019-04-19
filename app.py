@@ -163,7 +163,7 @@ def handle_postback(event):
             sftp.put('input.txt', 'input.txt')
             stdin,stdout,stderr=ssh.exec_command('python3 money/money.py')
             #print(stderr.readline())
-            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict1.py')
+            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py')
             #print(stderr.readline())
             #time.sleep(3)
             #stdin,stdout,stderr=ssh.exec_command('python3 save.py')
