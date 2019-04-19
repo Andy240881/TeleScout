@@ -189,7 +189,7 @@ def handle_postback(event):
                 for line in file:
                     print(line)
                     prods_prices.append(line.rstrip('\n'))
-            stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
+            #stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
             print("delet")
             i=0
             message = TemplateSendMessage(
