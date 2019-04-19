@@ -32,6 +32,9 @@ def callback():
     return 'OK'
 
 # 處理訊息
+def a():
+	@handler.add(MessageEvent, message=TextMessage)
+    handle_message(event):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     ssh = paramiko.SSHClient()
@@ -224,6 +227,7 @@ def handle_postback(event):
             )
             )
             line_bot_api.reply_message(event.reply_token, message)
+            a()
     elif (event.postback.data)=="0" or (event.postback.data)=="1" or (event.postback.data)=="2":
         prods_webs=[]
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
