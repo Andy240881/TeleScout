@@ -224,8 +224,6 @@ def handle_postback(event):
             )
             )
             line_bot_api.reply_message(event.reply_token, message)
-            #@handler.add(MessageEvent, message=TextMessage)
-            handle_message(event)
     elif (event.postback.data)=="0" or (event.postback.data)=="1" or (event.postback.data)=="2":
         prods_webs=[]
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
