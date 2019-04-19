@@ -190,6 +190,7 @@ def handle_postback(event):
                     print(line)
                     prods_prices.append(line.rstrip('\n'))
             stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
+            print("delet")
             i=0
             message = TemplateSendMessage(
             alt_text='ImageCarousel template',
