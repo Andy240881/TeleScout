@@ -189,6 +189,7 @@ def handle_postback(event):
                 for line in file:
                     print(line)
                     prods_prices.append(line.rstrip('\n'))
+            stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
             i=0
             message = TemplateSendMessage(
             alt_text='ImageCarousel template',
@@ -222,7 +223,6 @@ def handle_postback(event):
             )
             )
             line_bot_api.reply_message(event.reply_token, message)
-            stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
     elif (event.postback.data)=="0" or (event.postback.data)=="1" or (event.postback.data)=="2":
         prods_webs=[]
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
