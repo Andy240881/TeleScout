@@ -34,7 +34,7 @@ def callback():
 # 處理訊息
 def a():
     @handler.add(MessageEvent, message=TextMessage)
-    handle_message(event):
+    handle_message(event)
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     ssh = paramiko.SSHClient()
