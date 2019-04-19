@@ -167,8 +167,8 @@ def handle_postback(event):
             #print(stderr.readline())
             #time.sleep(3)
             #stdin,stdout,stderr=ssh.exec_command('python3 save.py')
-            #print(stderr.readlines())
-            time.sleep(2)
+            print(stderr.readlines())
+            time.sleep(5)
             if os.path.isfile("prods_img2.txt"):
                 os.remove('prods_img2.txt')
                 os.mknod("prods_img2.txt")
