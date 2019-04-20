@@ -242,7 +242,7 @@ def handle_postback(event):
         message = TextSendMessage(text="成功")
         line_bot_api.push_message(user_id, message)
         url=str(prods_webs[int(event.postback.data)])
-        ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+url+" "+str(user_id))
+        #ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 purchase.py '+url+" "+str(user_id))
         print(prods_webs[int(event.postback.data)])
         print(ssh_stderr.readlines())
         ssh.close()
