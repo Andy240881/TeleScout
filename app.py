@@ -156,11 +156,11 @@ def handle_postback(event):
             fp = open("input.txt", "w")	 
             fp.write(str(event.message.text))	 
             fp.close()
-            sftp.put('input.txt', 'input.txt')
-            stdin,stdout,stderr=ssh.exec_command('python3 money/money.py')
+            sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input.txt')
+            stdin,stdout,stderr=ssh.exec_command('python3 money/money.py '+user_id)
             #print(stderr.readline())
             time.sleep(2)
-            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py')
+            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py '+)
             #print(stderr.readline())
             #time.sleep(3)
             #stdin,stdout,stderr=ssh.exec_command('python3 save.py')
@@ -171,7 +171,7 @@ def handle_postback(event):
                 os.mknod("prods_img2.txt")
             else:
                 os.mknod("prods_img2.txt")
-            sftp.get('prods_img.txt', 'prods_img2.txt')
+            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_img.txt', 'prods_img2.txt')
             with open('prods_img2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     print(line)
@@ -181,7 +181,7 @@ def handle_postback(event):
                 os.mknod("prods_price2.txt")
             else:
                 os.mknod("prods_price2.txt")
-            sftp.get('prods_price.txt', 'prods_price2.txt')
+            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_price.txt', 'prods_price2.txt')
             with open('prods_price2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     print(line)
@@ -229,7 +229,7 @@ def handle_postback(event):
             os.remove('prods_web2.txt')
         else:
             os.mknod("prods_web2.txt")
-        sftp.get('prods_web.txt', 'prods_web2.txt')
+        sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_web.txt', 'prods_web2.txt')
         z=0
         with open('prods_web2.txt', 'r') as file:
             for line in file:
