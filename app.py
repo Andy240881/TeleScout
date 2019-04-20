@@ -160,7 +160,7 @@ def handle_postback(event):
             stdin,stdout,stderr=ssh.exec_command('python3 money/money.py '+user_id)
             #print(stderr.readline())
             time.sleep(2)
-            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py '+)
+            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py '+user_id)
             #print(stderr.readline())
             #time.sleep(3)
             #stdin,stdout,stderr=ssh.exec_command('python3 save.py')
