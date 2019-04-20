@@ -83,10 +83,6 @@ def handle_postback(event):
         def handle_message2(event):
             user_id = event.source.user_id
             ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python account.py '+str(event.message.text)+' '+str(user_id),get_pty=True)
-            #message = TextSendMessage(text="收到")
-            #line_bot_api.reply_message(event.reply_token, message)
-            #postback.postback.data="break"
-            #event=postback
     elif (event.postback.data)=="密碼":
         message = TextSendMessage(text="請輸入密碼:")
         line_bot_api.push_message(user_id, message)
