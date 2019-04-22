@@ -144,6 +144,7 @@ def handle_postback(event):
     elif (event.postback.data)=="買東西":
         message = TextSendMessage(text="您要買甚麼呢?")
         line_bot_api.push_message(user_id, message) 
+        i=0
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
             prods_pic=[]
@@ -188,7 +189,6 @@ def handle_postback(event):
                     prods_prices.append(line.rstrip('\n'))
             #stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
             print("delet")
-            i=0
             message = TemplateSendMessage(
             alt_text='ImageCarousel template',
             template=ImageCarouselTemplate(
