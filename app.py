@@ -258,7 +258,7 @@ def handle_postback(event):
             sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
             sftp = ssh.open_sftp()
             stdin,stdout,stderr=ssh.exec_command('python3 refund.py '+user_id+' '+str(event.message.text))
-            output=str(stdout.readlines()[0])
+            output=str(stdout.readlines()[0].rstrip('\n'))
             message = TextSendMessage(text=output)
             line_bot_api.push_message(user_id, message) 
 if __name__ == "__main__":
