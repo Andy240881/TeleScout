@@ -62,6 +62,10 @@ def handle_message(event):
         data='買東西'
     ),
     PostbackTemplateAction(
+        label='取消訂單',
+        data='取消訂單'
+    ),
+    PostbackTemplateAction(
         label='登入',
         data='登入'
     )
@@ -243,6 +247,20 @@ def handle_postback(event):
         print(prods_webs[int(event.postback.data)])
         print(ssh_stderr.readlines())
         ssh.close()
+    elif:(event.postback.data)=="取消訂單":
+        message = TextSendMessage(text="請輸入待取消的訂單編號:")
+        line_bot_api.push_message(user_id, message) 
+        @handler.add(MessageEvent, message=TextMessage)
+            def handle_message6(event):
+                ssh = paramiko.SSHClient()
+                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
+                sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
+                sftp = ssh.open_sftp()
+                stdin,stdout,stderr=ssh.exec_command('python3 refund.py '+user_id+' '+str(event.message.text))
+                output=strout.readlines()
+                message = TextSendMessage(text=str(output))
+                line_bot_api.push_message(user_id, message) 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
