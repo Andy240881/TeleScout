@@ -319,15 +319,15 @@ def handle_postback(event):
     elif (event.postback.data)=='a' or (event.postback.data)=='b' or (event.postback.data)=='c' or (event.postback.data)=='d' or (event.postback.data)=='e':
         refund_id=[]
         if (event.postback.data)=='a':
-            i=1
+            i=0
         elif (event.postback.data)=='b':
-            i=2
+            i=1
         elif (event.postback.data)=='c':
-            i=3
+            i=2
         elif (event.postback.data)=='d':
-            i=4
+            i=3
         elif (event.postback.data)=='e':
-            i=5           
+            i=4        
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
