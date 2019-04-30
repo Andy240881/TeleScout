@@ -248,19 +248,99 @@ def handle_postback(event):
         print(ssh_stderr.readlines())
         ssh.close()
     elif (event.postback.data)=="取消訂單":
-        message = TextSendMessage(text="請輸入待取消的訂單編號:")
+        refund_pic=[]
+        refund_time=[]
+        i=0
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
+        sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
+        sftp = ssh.open_sftp()
+        stdin,stdout,stderr=ssh.exec_command('python3 refund_detail.py '+user_id)
+        sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_img.txt', 'refund_img2.txt')
+        with open('refund_img2.txt', 'r', encoding='UTF-8') as file:
+            for line in file:
+                print(line)
+                refund_pic.append(line.rstrip('\n'))
+        sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_time.txt', 'refund_time2.txt')
+        with open('refund_time2.txt', 'r', encoding='UTF-8') as file:
+            for line in file:
+                print(line)
+                refund_time.append(line.rstrip('\n'))
+        message = TemplateSendMessage(
+            alt_text='ImageCarousel template',
+            template=ImageCarouselTemplate(
+            columns=[
+            ImageCarouselColumn(
+                image_url=refund_pic[i],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i]),
+                    #text='',
+                    data='a'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=prods_pic[i+1],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+1]),
+                    #text='',
+                    data='b'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=prods_pic[i+2],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+2]),
+                    #text='',
+                    data='c'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=prods_pic[i+3],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+3]),
+                    #text='',
+                    data='d'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=prods_pic[i+4],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+4]),
+                    #text='',
+                    data='e'
+                )
+            )
+            ]
+            )
+            )
+        line_bot_api.push_message(user_id, message)
+    elif (event.postback.data)=='a' or (event.postback.data)=='b' or (event.postback.data)=='c' or (event.postback.data)=='d' or (event.postback.data)=='e':
+        refund_id=[]
+        if (event.postback.data)=='a':
+            i=1
+        elif (event.postback.data)=='b':
+            i=2
+        elif (event.postback.data)=='c':
+            i=3
+        elif (event.postback.data)=='d':
+            i=4
+        elif (event.postback.data)=='e':
+            i=5           
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
+        sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
+        sftp = ssh.open_sftp()
+        sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_id.txt', 'refund_id2.txt')
+        with open('refund_id2.txt', 'r', encoding='UTF-8') as file:
+            for line in file:
+                print(line)
+                refund_id.append(line.rstrip('\n'))
+        stdin,stdout,stderr=ssh.exec_command('python3 refund.py '+user_id+' '+str(refund_id[i]))
+        output=str(stdout.readlines()[0].rstrip('\n'))
+        message = TextSendMessage(text=output)
         line_bot_api.push_message(user_id, message) 
-        @handler.add(MessageEvent, message=TextMessage)
-        def handle_message6(event):
-            ssh = paramiko.SSHClient()
-            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
-            sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
-            sftp = ssh.open_sftp()
-            stdin,stdout,stderr=ssh.exec_command('python3 refund.py '+user_id+' '+str(event.message.text))
-            output=str(stdout.readlines()[0].rstrip('\n'))
-            message = TextSendMessage(text=output)
-            line_bot_api.push_message(user_id, message) 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
