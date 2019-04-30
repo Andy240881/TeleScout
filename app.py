@@ -280,7 +280,7 @@ def handle_postback(event):
                 )
             ),
             ImageCarouselColumn(
-                image_url=prods_pic[i+1],
+                image_url=refund_pic[i+1],
                 action=PostbackTemplateAction(
                     label=str(refund_time[i+1]),
                     #text='',
@@ -288,7 +288,7 @@ def handle_postback(event):
                 )
             ),
             ImageCarouselColumn(
-                image_url=prods_pic[i+2],
+                image_url=refund_pic[i+2],
                 action=PostbackTemplateAction(
                     label=str(refund_time[i+2]),
                     #text='',
@@ -296,7 +296,7 @@ def handle_postback(event):
                 )
             ),
             ImageCarouselColumn(
-                image_url=prods_pic[i+3],
+                image_url=refund_pic[i+3],
                 action=PostbackTemplateAction(
                     label=str(refund_time[i+3]),
                     #text='',
@@ -304,7 +304,7 @@ def handle_postback(event):
                 )
             ),
             ImageCarouselColumn(
-                image_url=prods_pic[i+4],
+                image_url=refund_pic[i+4],
                 action=PostbackTemplateAction(
                     label=str(refund_time[i+4]),
                     #text='',
