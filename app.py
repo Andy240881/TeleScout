@@ -247,7 +247,7 @@ def handle_postback(event):
         print(prods_webs[int(event.postback.data)])
         print(ssh_stderr.readlines())
         ssh.close()
-    elif:(event.postback.data)=="取消訂單":
+    elif (event.postback.data)=="取消訂單":
         message = TextSendMessage(text="請輸入待取消的訂單編號:")
         line_bot_api.push_message(user_id, message) 
         @handler.add(MessageEvent, message=TextMessage)
