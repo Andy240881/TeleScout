@@ -255,7 +255,7 @@ def handle_postback(event):
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
         sftp = ssh.open_sftp()
         stdin,stdout,stderr=ssh.exec_command('python3 refund_detail.py '+user_id)
-        time.sleep(5)
+        time.sleep(7)
         sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_img.txt', 'refund_img2.txt')
         with open('refund_img2.txt', 'r', encoding='UTF-8') as file:
             for line in file:
