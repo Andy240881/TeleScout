@@ -147,6 +147,7 @@ def handle_postback(event):
         )
         line_bot_api.push_message(user_id, message)
     elif (event.postback.data)=="買東西":
+        ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+str(user_id),get_pty=True)
         message = TextSendMessage(text="您要買甚麼呢?")
         line_bot_api.push_message(user_id, message) 
         i=0
@@ -163,7 +164,6 @@ def handle_postback(event):
             fp.write(str(event.message.text))	 
             fp.close()
             sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input.txt')
-            sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
             stdin,stdout,stderr=ssh.exec_command('python3 money/money.py '+user_id)
             #print(stderr.readline())
             time.sleep(2)
