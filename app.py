@@ -50,6 +50,7 @@ def handle_message(event):
 #line_bot_api.reply_message(event.reply_token, message)
 # profile = line_bot_api.get_profile(user_id)
     user_id = event.source.user_id
+    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+str(user_id),get_pty=True)
     message = TemplateSendMessage(
     alt_text='Buttons template',
     template=ButtonsTemplate(
