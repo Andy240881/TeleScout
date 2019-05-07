@@ -37,15 +37,10 @@ def handle_message(event):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
-    sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
-    sftp = ssh.open_sftp()
-    fp = open("input.txt", "w")	 
-    fp.write(str(event.message.text))	 
-    fp.close()
-    sftp.put('input.txt', 'input.txt')
     global user_id;
     user_id = event.source.user_id
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+str(user_id),get_pty=True)
+    print("builded")
     message = TemplateSendMessage(
     alt_text='Buttons template',
     template=ButtonsTemplate(
