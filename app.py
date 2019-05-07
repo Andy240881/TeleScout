@@ -39,16 +39,11 @@ def handle_message(event):
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
     sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
     sftp = ssh.open_sftp()
-    #ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python test_ssh.py '+str(event.message.text),get_pty=True)
     fp = open("input.txt", "w")	 
     fp.write(str(event.message.text))	 
     fp.close()
     sftp.put('input.txt', 'input.txt')
-# message = TextSendMessage(text="驗證碼")
-#line_bot_api.reply_message(event.reply_token, message)
-# message = ImageSendMessage(original_content_url=str(url),preview_image_url=str(url))
-#line_bot_api.reply_message(event.reply_token, message)
-# profile = line_bot_api.get_profile(user_id)
+    global user_id;
     user_id = event.source.user_id
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+str(user_id),get_pty=True)
     message = TemplateSendMessage(
@@ -74,10 +69,8 @@ def handle_message(event):
     )
     )
     line_bot_api.push_message(user_id, message)
-@handler.add(PostbackEvent)#,message=ButtonsTemplate)
+@handler.add(PostbackEvent)
 def handle_postback(event):
-    #postback=event
-    user_id=event.source.user_id
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
@@ -86,7 +79,6 @@ def handle_postback(event):
         line_bot_api.push_message(user_id, message)
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message2(event):
-            user_id = event.source.user_id
             ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python account.py '+str(event.message.text)+' '+str(user_id),get_pty=True)
     elif (event.postback.data)=="密碼":
         message = TextSendMessage(text="請輸入密碼:")
@@ -94,15 +86,11 @@ def handle_postback(event):
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message3(event):
             ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python password.py '+str(event.message.text),get_pty=True)
-            #message = TextSendMessage(text="收到")
-            #line_bot_api.reply_message(event.reply_token, message)
     elif (event.postback.data)=="驗證碼":
         message = TextSendMessage(text="請輸入驗證碼:")
         line_bot_api.push_message(user_id, message)
         stdin,stdout,stderr=ssh.exec_command('python3 login.py '+str(user_id))
         time.sleep(5)
-        #os.system("0x1A")
-        #print(stdout.readline())
         if os.path.isfile("image2.txt"):
             os.remove('image2.txt')
             os.mknod("image2.txt")
@@ -110,7 +98,7 @@ def handle_postback(event):
             os.mknod("image2.txt")
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
         sftp = ssh.open_sftp()
-        sftp.get('image.txt', 'image2.txt')
+        sftp.get('/home/4105056023/user_cookie/'+user_id+'/image.txt', 'image2.txt')
         fp=open('image2.txt', 'r')
         url=fp.readline()
         fp.close()
@@ -120,8 +108,6 @@ def handle_postback(event):
         def handle_message4(event):
             stdin.channel.send(str(event.message.text))
             stdin.channel.shutdown_write()
-            #message = TextSendMessage(text="收到")
-            #line_bot_api.reply_message(event.reply_token, message)  
     elif (event.postback.data)=="登入":      
         message = TemplateSendMessage(
         alt_text='Buttons template',
@@ -165,7 +151,6 @@ def handle_postback(event):
             fp.close()
             sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input.txt')
             stdin,stdout,stderr=ssh.exec_command('python3 money/money.py '+user_id)
-            #print(stderr.readline())
             time.sleep(2)
             stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py '+user_id)
             print(stderr.readlines())
@@ -190,7 +175,6 @@ def handle_postback(event):
                 for line in file:
                     print(line)
                     prods_prices.append(line.rstrip('\n'))
-            #stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
             print("delet")
             message = TemplateSendMessage(
             alt_text='ImageCarousel template',
