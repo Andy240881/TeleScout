@@ -98,7 +98,7 @@ def handle_postback(event):
     elif (event.postback.data)=="驗證碼":
         message = TextSendMessage(text="請輸入驗證碼:")
         line_bot_api.push_message(user_id, message)
-        stdin,stdout,stderr=ssh.exec_command('python3 login.py '+str(user_id))
+        stdin,stdout,stderr=ssh.exec_command('python3 login.py '+str(user_id),get_pty = True)
         time.sleep(5)
         #os.system("0x1A")
         #print(stdout.readline())
