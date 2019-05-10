@@ -109,7 +109,7 @@ def handle_postback(event):
             os.mknod("image2.txt")
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
         sftp = ssh.open_sftp()
-        sftp.get('image.txt', 'image2.txt')
+        sftp.get("/home/4105056023/user_cookie/"+str(user_id)+"/image.txt", 'image2.txt')
         fp=open('image2.txt', 'r')
         url=fp.readline()
         fp.close()
