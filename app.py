@@ -37,7 +37,6 @@ def handle_message(event):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
-    global user_id;
     user_id = event.source.user_id
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+str(user_id),get_pty=True)
     print("builded")
@@ -66,6 +65,7 @@ def handle_message(event):
     line_bot_api.push_message(user_id, message)
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    user_id=event.postback.user_id
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
