@@ -128,7 +128,7 @@ def handle_postback(event):
         )
         line_bot_api.push_message(user_id, message)
     elif (event.postback.data)=="買東西":
-    	user_id=event.postback.user_id
+        user_id=event.postback.user_id
         ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+str(user_id),get_pty=True)
         message = TextSendMessage(text="您要買甚麼呢?")
         line_bot_api.push_message(user_id, message) 
