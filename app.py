@@ -205,6 +205,7 @@ def handle_postback(event):
             line_bot_api.reply_message(event.reply_token, message)
     elif (event.postback.data)=="0" or (event.postback.data)=="1" or (event.postback.data)=="2":
         prods_webs=[]
+        user_id=event.postback.user_id
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
         sftp = ssh.open_sftp()
         if os.path.isfile("prods_web2.txt"):
