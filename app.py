@@ -162,7 +162,7 @@ def handle_postback(event):
             #判斷資料夾是否存在
             if not os.path.exists(newdir):
             #建立資料夾
-            os.makedirs(newdir)
+                os.makedirs(newdir)
             if os.path.isfile(user_id+"/prods_img2.txt"):
                 os.remove(user_id+'/prods_img2.txt')
                 os.mknod(user_id+"/prods_img2.txt")
