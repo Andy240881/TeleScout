@@ -158,7 +158,7 @@ def handle_postback(event):
             print(stderr.readlines())
             time.sleep(3)
             #自訂資料夾名稱
-            newdir =  user_id+'/'
+            newdir = user_id+'/'
             #判斷資料夾是否存在
             if not os.path.exists(newdir):
             #建立資料夾
@@ -168,7 +168,7 @@ def handle_postback(event):
                 os.mknod(user_id+"/prods_img2.txt")
             else:
                 os.mknod(user_id+"/prods_img2.txt")
-            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_img.txt', 'prods_img2.txt')
+            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_img.txt', user_id+'/prods_img2.txt')
             with open(user_id+'/prods_img2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     print(line)
@@ -178,7 +178,7 @@ def handle_postback(event):
                 os.mknod(user_id+"/prods_price2.txt")
             else:
                 os.mknod(user_id+"/prods_price2.txt")
-            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_price.txt', 'prods_price2.txt')
+            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_price.txt', user_id+'/prods_price2.txt')
             with open(user_id+'/prods_price2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     print(line)
