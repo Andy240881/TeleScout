@@ -39,16 +39,10 @@ def handle_message(event):
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
     sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
     sftp = ssh.open_sftp()
-    #ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python test_ssh.py '+str(event.message.text),get_pty=True)
     fp = open("input.txt", "w")	 
     fp.write(str(event.message.text))	 
     fp.close()
     sftp.put('input.txt', 'input.txt')
-# message = TextSendMessage(text="驗證碼")
-#line_bot_api.reply_message(event.reply_token, message)
-# message = ImageSendMessage(original_content_url=str(url),preview_image_url=str(url))
-#line_bot_api.reply_message(event.reply_token, message)
-# profile = line_bot_api.get_profile(user_id)
     user_id = event.source.user_id
     message = TemplateSendMessage(
     alt_text='Buttons template',
@@ -73,7 +67,7 @@ def handle_message(event):
     )
     )
     line_bot_api.push_message(user_id, message)
-@handler.add(PostbackEvent)#,message=ButtonsTemplate)
+@handler.add(PostbackEvent)
 def handle_postback(event):
     #postback=event
     user_id=event.source.user_id
@@ -93,15 +87,11 @@ def handle_postback(event):
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message3(event):
             ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python password.py '+str(event.message.text),get_pty=True)
-            #message = TextSendMessage(text="收到")
-            #line_bot_api.reply_message(event.reply_token, message)
     elif (event.postback.data)=="驗證碼":
         message = TextSendMessage(text="請輸入驗證碼:")
         line_bot_api.push_message(user_id, message)
         stdin,stdout,stderr=ssh.exec_command('python3 login.py '+str(user_id),get_pty = True)
         time.sleep(5)
-        #os.system("0x1A")
-        #print(stdout.readline())
         if os.path.isfile("image2.txt"):
             os.remove('image2.txt')
             os.mknod("image2.txt")
@@ -119,8 +109,6 @@ def handle_postback(event):
         def handle_message4(event):
             stdin.channel.send(str(event.message.text))
             stdin.channel.shutdown_write()
-            #message = TextSendMessage(text="收到")
-            #line_bot_api.reply_message(event.reply_token, message)  
     elif (event.postback.data)=="登入":      
         message = TemplateSendMessage(
         alt_text='Buttons template',
@@ -146,6 +134,7 @@ def handle_postback(event):
         )
         line_bot_api.push_message(user_id, message)
     elif (event.postback.data)=="買東西":
+        user_id=event.source.user_id
         message = TextSendMessage(text="您要買甚麼呢?")
         line_bot_api.push_message(user_id, message) 
         i=0
@@ -164,32 +153,30 @@ def handle_postback(event):
             sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input.txt')
             sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
             stdin,stdout,stderr=ssh.exec_command('python3 money/money.py '+user_id)
-            #print(stderr.readline())
             time.sleep(2)
             stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py '+user_id)
             print(stderr.readlines())
             time.sleep(3)
-            if os.path.isfile("prods_img2.txt"):
-                os.remove('prods_img2.txt')
-                os.mknod("prods_img2.txt")
+            if os.path.isfile(user_id+"/prods_img2.txt"):
+                os.remove(user_id+'/prods_img2.txt')
+                os.mknod(user_id+"/prods_img2.txt")
             else:
-                os.mknod("prods_img2.txt")
+                os.mknod(user_id+"/prods_img2.txt")
             sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_img.txt', 'prods_img2.txt')
-            with open('prods_img2.txt', 'r', encoding='UTF-8') as file:
+            with open(user_id+'/prods_img2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     print(line)
                     prods_pic.append(line.rstrip('\n'))
-            if os.path.isfile("prods_price2.txt"):
-                os.remove('prods_price2.txt')
-                os.mknod("prods_price2.txt")
+            if os.path.isfile(user_id+"/prods_price2.txt"):
+                os.remove(user_id+'/prods_price2.txt')
+                os.mknod(user_id+"/prods_price2.txt")
             else:
-                os.mknod("prods_price2.txt")
+                os.mknod(user_id+"/prods_price2.txt")
             sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_price.txt', 'prods_price2.txt')
-            with open('prods_price2.txt', 'r', encoding='UTF-8') as file:
+            with open(user_id+'/prods_price2.txt', 'r', encoding='UTF-8') as file:
                 for line in file:
                     print(line)
                     prods_prices.append(line.rstrip('\n'))
-            #stdin,stdout,stderr=ssh.exec_command('python3 delet.py')
             print("delet")
             message = TemplateSendMessage(
             alt_text='ImageCarousel template',
