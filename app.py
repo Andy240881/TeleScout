@@ -157,6 +157,12 @@ def handle_postback(event):
             stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py '+user_id)
             print(stderr.readlines())
             time.sleep(3)
+            #自訂資料夾名稱
+            newdir =  user_id+'/'
+            #判斷資料夾是否存在
+            if not os.path.exists(newdir):
+            #建立資料夾
+            os.makedirs(newdir)
             if os.path.isfile(user_id+"/prods_img2.txt"):
                 os.remove(user_id+'/prods_img2.txt')
                 os.mknod(user_id+"/prods_img2.txt")
