@@ -43,7 +43,7 @@ def handle_message(event):
     fp.write(str(event.message.text))	 
     fp.close()
     sftp.put('input.txt', 'input.txt')
-    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py',get_pty=True)
+    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py',get_pty=True);
     user_id = event.source.user_id
     message = TemplateSendMessage(
     alt_text='Buttons template',
