@@ -70,7 +70,6 @@ def handle_message(event):
     line_bot_api.push_message(user_id, message)
 @handler.add(PostbackEvent)
 def handle_postback(event):
-    #postback=event
     user_id=event.source.user_id
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -216,6 +215,7 @@ def handle_postback(event):
             )
             )
             line_bot_api.reply_message(event.reply_token, message)
+            prods_prices.clear()
     elif (event.postback.data)=="0" or (event.postback.data)=="1" or (event.postback.data)=="2":
         prods_webs=[]
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
