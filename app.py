@@ -215,6 +215,7 @@ def handle_postback(event):
             )
             )
             line_bot_api.reply_message(event.reply_token, message)
+            prods_pic.clear()
             prods_prices.clear()
     elif (event.postback.data)=="0" or (event.postback.data)=="1" or (event.postback.data)=="2":
         prods_webs=[]
@@ -306,6 +307,8 @@ def handle_postback(event):
             )
             )
         line_bot_api.push_message(user_id, message)
+        refund_pic.clear()
+        refund_time.clear()
     elif (event.postback.data)=='a' or (event.postback.data)=='b' or (event.postback.data)=='c' or (event.postback.data)=='d' or (event.postback.data)=='e':
         refund_id=[]
         if (event.postback.data)=='a':
