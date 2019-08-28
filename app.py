@@ -133,7 +133,7 @@ def handle_postback(event):
         )
         )
         line_bot_api.push_message(user_id, message)
-    elif(event.postback.data && user_id==event.source.user_id)=="買東西":
+    elif(event.postback.data=="買東西" && user_id==event.source.user_id):
         user_id=event.source.user_id
         message = TextSendMessage(text="您要買甚麼呢?")
         line_bot_api.push_message(user_id, message) 
