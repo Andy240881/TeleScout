@@ -275,7 +275,6 @@ def handle_postback(event):
                 image_url=refund_pic[i+1],
                 action=PostbackTemplateAction(
                     label=str(refund_time[i+1]),
-                    #text='',
                     data='b'
                 )
             ),
