@@ -10,8 +10,6 @@ from linebot.models import *
 import paramiko
 import os
 import time
-import synonyms
-from opencc import OpenCC
 app = Flask(__name__)
 
 # Channel Access Token
