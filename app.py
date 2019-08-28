@@ -39,8 +39,8 @@ def handle_message(event):
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
     sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
     sftp = ssh.open_sftp()
-    fp = open("input.txt", "w")	 
-    fp.write(str(event.message.text))	 
+    fp = open("input.txt", "w")  
+    fp.write(str(event.message.text))    
     fp.close()
     sftp.put('input.txt', 'input.txt')
     user_id = event.source.user_id
@@ -147,8 +147,8 @@ def handle_postback(event):
             ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
             sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
             sftp = ssh.open_sftp()
-            fp = open("input.txt", "w")	 
-            fp.write(str(event.message.text))	 
+            fp = open("input.txt", "w")  
+            fp.write(str(event.message.text))    
             fp.close()
             sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input.txt')
             stdin,stdout,stderr=ssh.exec_command('python3 money/money.py '+user_id)
@@ -275,6 +275,7 @@ def handle_postback(event):
                 image_url=refund_pic[i+1],
                 action=PostbackTemplateAction(
                     label=str(refund_time[i+1]),
+                    #text='',
                     data='b'
                 )
             ),
