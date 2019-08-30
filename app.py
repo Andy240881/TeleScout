@@ -62,6 +62,8 @@ def handle_message(event):
     with open(user_id+'/qa.txt', 'r', encoding='UTF-8') as file:
         for line in file:
             action=line
+    print(action)
+    print('\n')
     if action=='none':
         message = TemplateSendMessage(
         alt_text='Buttons template',
