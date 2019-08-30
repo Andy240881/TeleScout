@@ -47,7 +47,10 @@ def handle_message(event):
     fp.close()
     sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
     sftp.close()
-    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python QA.py '+user_id,get_pty=True);
+    ssh2 = paramiko.SSHClient()
+    ssh2.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh2.connect("140.120.13.251",6023,"4105056023","4105056019")
+    ssh_stdin,ssh_stdout,ssh_stderr=ssh2.exec_command('python QA.py '+user_id,get_pty=True);
     message = TemplateSendMessage(
     alt_text='Buttons template',
     template=ButtonsTemplate(
