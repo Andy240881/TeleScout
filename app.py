@@ -38,14 +38,15 @@ def handle_message(event):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
+    user_id = event.source.user_id
+    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+user_id,get_pty=True);
     sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
     sftp = ssh.open_sftp()
     fp = open("input.txt", "w")  
     fp.write(str(event.message.text))    
     fp.close()
-    sftp.put('input.txt', 'input.txt')
-    user_id = event.source.user_id
-    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+user_id,get_pty=True);
+    sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
+    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python QA.py '+user_id,get_pty=True);
     message = TemplateSendMessage(
     alt_text='Buttons template',
     template=ButtonsTemplate(
