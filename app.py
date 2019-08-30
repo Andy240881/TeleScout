@@ -49,7 +49,7 @@ def handle_message(event):
     sftp.close()
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python QA.py '+user_id,get_pty=True)
     print("############\n")
-    print(ssh_stderr.readline())
+    print(ssh_stderr.read())
     print(ssh_stdout.readline())
     print("############\n")
     message = TemplateSendMessage(
