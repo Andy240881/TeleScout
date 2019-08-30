@@ -30,10 +30,11 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     return 'OK'
-
+user_id=''
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    global user_id
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
@@ -70,6 +71,7 @@ def handle_message(event):
     line_bot_api.push_message(user_id, message)
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    global user_id
     user_id=event.source.user_id
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -79,6 +81,7 @@ def handle_postback(event):
         line_bot_api.push_message(user_id, message)
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message2(event):
+            global user_id
             user_id = event.source.user_id
             ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python account.py '+str(event.message.text)+' '+str(user_id),get_pty=True)
     elif (event.postback.data)=="密碼":
@@ -140,6 +143,7 @@ def handle_postback(event):
         i=0
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
+            global user_id
             prods_pic=[]
             prods_prices=[]
             ssh = paramiko.SSHClient()
