@@ -49,7 +49,9 @@ def handle_message(event):
     sftp.close()
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python QA.py '+user_id,get_pty=True)
     print("############\n")
-    print(ssh_stderr)
+    print(ssh_stderr.readline())
+    print(ssh_stdout.readline())
+    print(ssh_stdin.readline())
     print("############\n")
     message = TemplateSendMessage(
     alt_text='Buttons template',
