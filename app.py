@@ -51,7 +51,6 @@ def handle_message(event):
     print("############\n")
     print(ssh_stderr.readline())
     print(ssh_stdout.readline())
-    print(ssh_stdin.readline())
     print("############\n")
     message = TemplateSendMessage(
     alt_text='Buttons template',
