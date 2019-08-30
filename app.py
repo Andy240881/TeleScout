@@ -46,6 +46,7 @@ def handle_message(event):
     fp.write(str(event.message.text))    
     fp.close()
     sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
+    sftp.close_sftp()
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python QA.py '+user_id,get_pty=True);
     message = TemplateSendMessage(
     alt_text='Buttons template',
