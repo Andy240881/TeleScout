@@ -59,7 +59,6 @@ def handle_message(event):
     else:
         os.mknod(user_id+"/qa.txt")
     sftp.get('/home/4105056023/user_cookie/'+user_id+'/QA_result.txt', user_id+'/qa.txt')
-    sftp.close()
     with open(user_id+'/qa.txt', 'r', encoding='UTF-8') as file:
         for line in file:
             action=line
@@ -449,6 +448,7 @@ def handle_postback(event):
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
         sftp = ssh.open_sftp()
         stdin,stdout,stderr=ssh.exec_command('python3 refund_detail.py '+user_id)
+        print(stderr.readlines())
         time.sleep(8)
         sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_img.txt', 'refund_img2.txt')
         with open('refund_img2.txt', 'r', encoding='UTF-8') as file:
