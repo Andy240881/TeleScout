@@ -60,7 +60,7 @@ def handle_message(event):
         os.mknod(user_id+"/qa.txt")
     sftp.get('/home/4105056023/user_cookie/'+user_id+'/QA_result.txt', user_id+'/qa.txt')
     sftp.close()
-    with open(user_id+'/prods_img2.txt', 'r', encoding='UTF-8') as file:
+    with open(user_id+'/qa.txt', 'r', encoding='UTF-8') as file:
         for line in file:
             action=line
     if action=='none':
