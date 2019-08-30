@@ -48,9 +48,6 @@ def handle_message(event):
     sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
     sftp.close()
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 QA.py '+user_id,get_pty=True)
-    print('##########\n')
-    print(ssh_stdin)
-    print('##########\n')
     message = TemplateSendMessage(
     alt_text='Buttons template',
     template=ButtonsTemplate(
