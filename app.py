@@ -46,7 +46,6 @@ def handle_message(event):
     fp.write(str(event.message.text))    
     fp.close()
     sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
-    sftp.close()
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 QA.py '+user_id)
     #自訂資料夾名稱
     newdir = user_id+'/'
@@ -60,6 +59,7 @@ def handle_message(event):
     else:
         os.mknod(user_id+"/qa.txt")
     sftp.get('/home/4105056023/user_cookie/'+user_id+'/QA_result.txt', user_id+'/qa.txt')
+    sftp.close()
     with open(user_id+'/prods_img2.txt', 'r', encoding='UTF-8') as file:
         for line in file:
             action=line
