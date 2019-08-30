@@ -53,7 +53,7 @@ def handle_message(event):
     #判斷資料夾是否存在
     if not os.path.exists(newdir):
     #建立資料夾
-    os.makedirs(newdir)
+        os.makedirs(newdir)
     if os.path.isfile(user_id+"/qa.txt"):
         os.remove(user_id+'/qa.txt')
         os.mknod(user_id+"/qa.txt")
