@@ -47,6 +47,7 @@ def handle_message(event):
     fp.close()
     sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 QA.py '+user_id,get_pty=True)
+    print(ssh_stdout.readlines())
     #自訂資料夾名稱
     newdir = user_id+'/'
     #判斷資料夾是否存在
