@@ -46,6 +46,7 @@ def handle_message(event):
     fp.write(str(event.message.text))    
     fp.close()
     sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
+    time.sleep(3)
     ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 QA.py '+user_id)
     #自訂資料夾名稱
     newdir = user_id+'/'
