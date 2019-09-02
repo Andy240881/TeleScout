@@ -30,46 +30,246 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     return 'OK'
-
+user_id=''
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    global user_id
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
+    user_id = event.source.user_id
+    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+user_id,get_pty=True)
     sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
     sftp = ssh.open_sftp()
     fp = open("input.txt", "w")  
     fp.write(str(event.message.text))    
     fp.close()
-    sftp.put('input.txt', 'input.txt')
-    user_id = event.source.user_id
-    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python build.py '+user_id,get_pty=True);
-    message = TemplateSendMessage(
-    alt_text='Buttons template',
-    template=ButtonsTemplate(
-    thumbnail_image_url='https://i.imgur.com/aumnJPq.png',
-    title='Menu',
-    text='Please select',
-    actions=[
-    PostbackTemplateAction(
-        label='買東西',
-        data='買東西'
-    ),
-    PostbackTemplateAction(
-        label='取消訂單',
-        data='取消訂單'
-    ),
-    PostbackTemplateAction(
-        label='登入',
-        data='登入'
-    )
-    ]
-    )
-    )
-    line_bot_api.push_message(user_id, message)
+    sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input2.txt')
+    ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python3 QA.py '+user_id)
+    #自訂資料夾名稱
+    newdir = user_id+'/'
+    #判斷資料夾是否存在
+    if not os.path.exists(newdir):
+    #建立資料夾
+        os.makedirs(newdir)
+    if os.path.isfile(user_id+"/qa.txt"):
+        os.remove(user_id+'/qa.txt')
+        os.mknod(user_id+"/qa.txt")
+    else:
+        os.mknod(user_id+"/qa.txt")
+    sftp.get('/home/4105056023/user_cookie/'+user_id+'/QA_result.txt', user_id+'/qa.txt')
+    with open(user_id+'/qa.txt', 'r', encoding='UTF-8') as file:
+        for line in file:
+            action=line
+    print(action)
+    print('\n')
+    if action=='none':
+        message = TemplateSendMessage(
+        alt_text='Buttons template',
+        template=ButtonsTemplate(
+        thumbnail_image_url='https://i.imgur.com/aumnJPq.png',
+        title='Menu',
+        text='Please select',
+        actions=[
+        PostbackTemplateAction(
+            label='買東西',
+            data='買東西'
+        ),
+        PostbackTemplateAction(
+            label='取消訂單',
+            data='取消訂單'
+        ),
+        PostbackTemplateAction(
+            label='登入',
+            data='登入'
+        )
+        ]
+        )
+        )
+        line_bot_api.push_message(user_id, message)
+    elif action=='buy':
+        message = TextSendMessage(text="您要買甚麼呢?")
+        line_bot_api.push_message(user_id, message) 
+        i=0
+        @handler.add(MessageEvent, message=TextMessage)
+        def handle_message5(event):
+            global user_id
+            prods_pic=[]
+            prods_prices=[]
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
+            sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
+            sftp = ssh.open_sftp()
+            fp = open("input.txt", "w")  
+            fp.write(str(event.message.text))    
+            fp.close()
+            sftp.put('input.txt', '/home/4105056023/user_cookie/'+user_id+'/input.txt')
+            stdin,stdout,stderr=ssh.exec_command('python3 money/money.py '+user_id)
+            time.sleep(2)
+            stdin,stdout,stderr=ssh.exec_command('python3 pb/predict.py '+user_id)
+            print(stderr.readlines())
+            time.sleep(3)
+            #自訂資料夾名稱
+            newdir = user_id+'/'
+            #判斷資料夾是否存在
+            if not os.path.exists(newdir):
+            #建立資料夾
+                os.makedirs(newdir)
+            if os.path.isfile(user_id+"/prods_img2.txt"):
+                os.remove(user_id+'/prods_img2.txt')
+                os.mknod(user_id+"/prods_img2.txt")
+            else:
+                os.mknod(user_id+"/prods_img2.txt")
+            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_img.txt', user_id+'/prods_img2.txt')
+            with open(user_id+'/prods_img2.txt', 'r', encoding='UTF-8') as file:
+                for line in file:
+                    print(line)
+                    prods_pic.append(line.rstrip('\n'))
+            if os.path.isfile(user_id+"/prods_price2.txt"):
+                os.remove(user_id+'/prods_price2.txt')
+                os.mknod(user_id+"/prods_price2.txt")
+            else:
+                os.mknod(user_id+"/prods_price2.txt")
+            sftp.get('/home/4105056023/user_cookie/'+user_id+'/prods_price.txt', user_id+'/prods_price2.txt')
+            with open(user_id+'/prods_price2.txt', 'r', encoding='UTF-8') as file:
+                for line in file:
+                    print(line)
+                    prods_prices.append(line.rstrip('\n'))
+            print("delet")
+            message = TemplateSendMessage(
+            alt_text='ImageCarousel template',
+            template=ImageCarouselTemplate(
+            columns=[
+            ImageCarouselColumn(
+                image_url=prods_pic[i],
+                action=PostbackTemplateAction(
+                    label="$"+str(prods_prices[i]),
+                    #text='',
+                    data=str(i)
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=prods_pic[i+1],
+                action=PostbackTemplateAction(
+                    label="$"+str(prods_prices[i+1]),
+                    #text='',
+                    data=str(i+1)
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=prods_pic[i+2],
+                action=PostbackTemplateAction(
+                    label="$"+str(prods_prices[i+2]),
+                    #text='',
+                    data=str(i+2)
+                )
+            )
+            ]
+            )
+            )
+            line_bot_api.reply_message(event.reply_token, message)
+            prods_pic.clear()
+            prods_prices.clear()
+    elif action=='cancel':
+        refund_pic=[]
+        refund_time=[]
+        i=0
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect("140.120.13.251",6023,"4105056023","4105056019")
+        sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
+        sftp = ssh.open_sftp()
+        stdin,stdout,stderr=ssh.exec_command('python3 refund_detail.py '+user_id)
+        time.sleep(8)
+        sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_img.txt', 'refund_img2.txt')
+        with open('refund_img2.txt', 'r', encoding='UTF-8') as file:
+            for line in file:
+                print(line)
+                refund_pic.append(line.rstrip('\n'))
+        sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_time.txt', 'refund_time2.txt')
+        with open('refund_time2.txt', 'r', encoding='UTF-8') as file:
+            for line in file:
+                print(line)
+                refund_time.append(line.rstrip('\n'))
+        message = TemplateSendMessage(
+            alt_text='ImageCarousel template',
+            template=ImageCarouselTemplate(
+            columns=[
+            ImageCarouselColumn(
+                image_url=refund_pic[i],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i]),
+                    #text='',
+                    data='a'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=refund_pic[i+1],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+1]),
+                    #text='',
+                    data='b'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=refund_pic[i+2],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+2]),
+                    #text='',
+                    data='c'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=refund_pic[i+3],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+3]),
+                    #text='',
+                    data='d'
+                )
+            ),
+            ImageCarouselColumn(
+                image_url=refund_pic[i+4],
+                action=PostbackTemplateAction(
+                    label=str(refund_time[i+4]),
+                    #text='',
+                    data='e'
+                )
+            )
+            ]
+            )
+            )
+        line_bot_api.push_message(user_id, message)
+        refund_pic.clear()
+        refund_time.clear()
+    elif action=='login':
+        message = TemplateSendMessage(
+        alt_text='Buttons template',
+        template=ButtonsTemplate(
+        thumbnail_image_url='https://i.imgur.com/aumnJPq.png',
+        title='Menu',
+        text='Please select',
+        actions=[
+        PostbackTemplateAction(
+            label='帳號',
+            data='帳號'
+        ),
+        PostbackTemplateAction(
+            label='密碼',
+            data='密碼'
+        ),
+        PostbackTemplateAction(
+            label='驗證碼',
+            data='驗證碼'
+        )
+        ]
+        )
+        )
+        line_bot_api.push_message(user_id, message)
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    global user_id
     user_id=event.source.user_id
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -79,6 +279,7 @@ def handle_postback(event):
         line_bot_api.push_message(user_id, message)
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message2(event):
+            global user_id
             user_id = event.source.user_id
             ssh_stdin,ssh_stdout,ssh_stderr=ssh.exec_command('python account.py '+str(event.message.text)+' '+str(user_id),get_pty=True)
     elif (event.postback.data)=="密碼":
@@ -140,6 +341,7 @@ def handle_postback(event):
         i=0
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
+            global user_id
             prods_pic=[]
             prods_prices=[]
             ssh = paramiko.SSHClient()
@@ -248,6 +450,7 @@ def handle_postback(event):
         sftp = paramiko.SFTPClient.from_transport(ssh.get_transport())
         sftp = ssh.open_sftp()
         stdin,stdout,stderr=ssh.exec_command('python3 refund_detail.py '+user_id)
+        print(stderr.readlines())
         time.sleep(8)
         sftp.get('/home/4105056023/user_cookie/'+user_id+'/refund_img.txt', 'refund_img2.txt')
         with open('refund_img2.txt', 'r', encoding='UTF-8') as file:
