@@ -11,7 +11,9 @@ import paramiko
 import os
 import time
 app = Flask(__name__)
-
+class MyException(Exception):
+  def __init__(self, value):
+    self.value = value
 # Channel Access Token
 line_bot_api = LineBotApi('9z2SNrr86ZejumpU4hSMa5xry0tLD263V38C3twWNq9ZTr4eIkxTjPMNT3SHyeGzE/yk8JLxexC8M9kzcwAQQEQD6msApg7AaLAn0iV63HaiT7GbMld9wnu4A14261GorC87rWc0BNu603IrNCSzIAdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
@@ -31,6 +33,7 @@ def callback():
         abort(400)
     return 'OK'
 user_id=''
+
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -95,6 +98,8 @@ def handle_message(event):
         i=0
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
+            if event.message.text=="restart":
+                raise MyException("restart")
             global user_id
             prods_pic=[]
             prods_prices=[]
@@ -342,6 +347,8 @@ def handle_postback(event):
         i=0
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
+            if event.message.text=="restart":
+                raise MyException("restart")
             global user_id
             prods_pic=[]
             prods_prices=[]
@@ -539,6 +546,11 @@ def handle_postback(event):
         output=str(stdout.readlines()[0].rstrip('\n'))
         message = TextSendMessage(text=output)
         line_bot_api.push_message(user_id, message) 
-if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+while 1:
+    try:
+        if __name__ == "__main__":
+            port = int(os.environ.get('PORT', 5000))
+            app.run(host='0.0.0.0', port=port)
+    except MyException as e:
+        if e.value=="restart":
+            continue
