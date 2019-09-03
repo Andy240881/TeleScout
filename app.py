@@ -348,9 +348,11 @@ def handle_postback(event):
         def handle_message5(event):
             global user_id
             if event.message.text=="restart":
-                handle_message(event)
                 message = TextSendMessage(text="需要甚麼服務呢?")
                 line_bot_api.push_message(user_id, message)
+                while event.message.text=="restart":
+                    ;
+                handle_message(event)
                 return None
             prods_pic=[]
             prods_prices=[]
