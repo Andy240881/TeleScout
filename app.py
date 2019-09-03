@@ -346,11 +346,11 @@ def handle_postback(event):
         i=0
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
+            global user_id
             if event.message.text=="restart":
                 message = TextSendMessage(text="需要甚麼服務呢?")
                 line_bot_api.push_message(user_id, message) 
                 return None
-            global user_id
             prods_pic=[]
             prods_prices=[]
             ssh = paramiko.SSHClient()
