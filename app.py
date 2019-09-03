@@ -97,8 +97,6 @@ def handle_message(event):
         i=0
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
-            if event.message.text=="restart":
-                return
             global user_id
             prods_pic=[]
             prods_prices=[]
