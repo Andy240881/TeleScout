@@ -347,7 +347,7 @@ def handle_postback(event):
         @handler.add(MessageEvent, message=TextMessage)
         def handle_message5(event):
             if event.message.text=="restart":
-                return
+                return None
             global user_id
             prods_pic=[]
             prods_prices=[]
