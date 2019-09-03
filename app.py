@@ -350,10 +350,10 @@ def handle_postback(event):
             if event.message.text=="restart":
                 message = TextSendMessage(text="需要甚麼服務呢?")
                 line_bot_api.push_message(user_id, message)
-                while event.message.text=="restart":
-                    print("waiting\n")
-                handle_message(event)
-                return None
+            while event.message.text=="restart":
+                print("waiting\n")
+            handle_message(event)
+            return None
             prods_pic=[]
             prods_prices=[]
             ssh = paramiko.SSHClient()
